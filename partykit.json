@@ -1,0 +1,4 @@
+{
+  "name": "five-minute-dungeon",
+  "main": "party/index.ts"
+}
