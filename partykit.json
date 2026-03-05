@@ -1,4 +1,7 @@
 {
   "name": "five-minute-dungeon",
-  "main": "party/index.ts"
+  "main": "party/index.ts",
+  "parties": {
+    "counter": "party/counter.ts"
+  }
 }
