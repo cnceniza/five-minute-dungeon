@@ -124,15 +124,15 @@
 
 ### 2.1 Define Game Types
 
-- [ ] In `types/index.ts`, define all shared TypeScript interfaces:
-  - [ ] `Player` — id, name, hand (array of cards), isReady, isConnected
-  - [ ] `Card` — id, name, type (e.g. sword, shield, scroll, etc.), value
-  - [ ] `DungeonBoss` — id, name, requiredCards (what combination defeats it), currentHp (or resistance tracker)
-  - [ ] `GameRoom` — roomId, players, currentBoss, deck (remaining cards), phase, timer, winner
-  - [ ] `GamePhase` — `"waiting"` | `"countdown"` | `"playing"` | `"won"` | `"lost"`
-  - [ ] `ServerMessage` — a discriminated union of all messages the server can send to clients
-  - [ ] `ClientMessage` — a discriminated union of all messages clients can send to the server
-- [ ] Review types with the lens of: "can I serialize and deserialize this as JSON?" — adjust any types that can't be
+- [x] In `types/index.ts`, define all shared TypeScript interfaces:
+  - [x] `Player` — id, name, hand (array of cards), isReady, isConnected
+  - [x] `Card` — id, name, type (e.g. sword, shield, scroll, etc.), value
+  - [x] `DungeonBoss` — id, name, requiredCards (what combination defeats it), currentHp (or resistance tracker)
+  - [x] `GameRoom` — roomId, players, currentBoss, deck (remaining cards), phase, timer, winner
+  - [x] `GamePhase` — `"waiting"` | `"countdown"` | `"playing"` | `"won"` | `"lost"`
+  - [x] `ServerMessage` — a discriminated union of all messages the server can send to clients
+  - [x] `ClientMessage` — a discriminated union of all messages clients can send to the server
+- [x] Review types with the lens of: "can I serialize and deserialize this as JSON?" — adjust any types that can't be
 
 ### 2.2 Define the Message Protocol
 
