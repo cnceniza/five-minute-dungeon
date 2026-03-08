@@ -154,21 +154,21 @@
 
 ### 2.3 Server State Management
 
-- [ ] Set up the PartyKit server class in `party/index.ts`
-- [ ] Initialize `gameState` as an in-memory object on the server class (this persists for the lifetime of the room)
-- [ ] Implement `getInitialState(roomId: string): GameRoom` — a pure function that returns a fresh game state
-- [ ] Implement `onConnect(connection, room)`:
-  - [ ] Add the new player to state with a generated player ID
-  - [ ] Send the new player the full current game state immediately (`request_state` pattern)
-  - [ ] Broadcast `player_joined` to all other connections
-- [ ] Implement `onClose(connection, room)`:
-  - [ ] Mark the player as disconnected in state (don't remove — they may reconnect)
-  - [ ] If no players remain, reset room state after a grace period (e.g. 30 seconds)
-  - [ ] Broadcast `player_left` to remaining connections
-- [ ] Implement `onMessage(message, sender, room)`:
-  - [ ] Parse message as JSON — wrap in try/catch, send `error` back to sender on parse failure
-  - [ ] Dispatch to handler based on `message.type` using a switch statement
-  - [ ] After every state mutation, call a `broadcastState()` helper
+- [x] Set up the PartyKit server class in `party/index.ts`
+- [x] Initialize `gameState` as an in-memory object on the server class (this persists for the lifetime of the room)
+- [x] Implement `getInitialState(roomId: string): GameRoom` — a pure function that returns a fresh game state
+- [x] Implement `onConnect(connection, room)`:
+  - [x] Add the new player to state with a generated player ID
+  - [x] Send the new player the full current game state immediately (`request_state` pattern)
+  - [x] Broadcast `player_joined` to all other connections
+- [x] Implement `onClose(connection, room)`:
+  - [x] Mark the player as disconnected in state (don't remove — they may reconnect)
+  - [x] If no players remain, reset room state after a grace period (e.g. 30 seconds)
+  - [x] Broadcast `player_left` to remaining connections
+- [x] Implement `onMessage(message, sender, room)`:
+  - [x] Parse message as JSON — wrap in try/catch, send `error` back to sender on parse failure
+  - [x] Dispatch to handler based on `message.type` using a switch statement
+  - [x] After every state mutation, call a `broadcastState()` helper
 
 ### 2.4 Implement Game Logic — Pure Functions
 
