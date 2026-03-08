@@ -143,8 +143,7 @@ export default class GameServer implements Party.Server {
     // Send full state to the joining player immediately
     sendTo(conn, { type: "STATE_SYNC", state: this.state });
 
-    // Notify everyone else
-    conn.send; // already sent above
+    // Notify everyone else that a new player joined
     broadcast(this.room, { type: "PLAYER_JOINED", player: newPlayer });
   }
 
