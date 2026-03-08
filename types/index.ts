@@ -1,6 +1,6 @@
 /**
  * 5 Minute Dungeon — Core Symbols
- * These are the basic resources used to defeat monsters.
+ * Swords, Arrows, Scrolls, Jump, Shields — used to match dungeon cards.
  */
 export type GameSymbol = "sword" | "shield" | "arrow" | "jump" | "scroll";
 
@@ -10,26 +10,52 @@ export type GameSymbol = "sword" | "shield" | "arrow" | "jump" | "scroll";
 export type GamePhase = "waiting" | "countdown" | "playing" | "won" | "lost";
 
 /**
+ * Hero classes available in the game
+ */
+export type HeroClass =
+    | "barbarian"
+    | "paladin"
+    | "ninja"
+    | "huntress"
+    | "wizard"
+    | "knight"
+    | "angel"
+    | "sorceress"
+    | "ranger"
+    | "catfish"
+    | "time-keeper"
+    | "bard";
+
+/**
  * A Player Card
+ * Resource cards supply symbols. Action cards have instant effects.
  */
 export interface Card {
     id: string;
     name: string;
+    // Resource card symbols — may have 0 for pure Action cards  
     symbols: GameSymbol[];
     type: "resource" | "action";
-    value?: number; // For specific action cards that might have a numeric value
+    // What dungeon card types this action card can defeat (undefined = anything)
+    targets?: Array<DungeonCardType>;
 }
 
 /**
- * A Monster or Boss to defeat
+ * The type of a dungeon card — matters for what can defeat it
  */
-export interface Monster {
+export type DungeonCardType = "monster" | "obstacle" | "person" | "event" | "mini-boss" | "boss";
+
+/**
+ * A Dungeon Card (Door Card, Event Card, Mini-Boss, or Boss)
+ */
+export interface DungeonCard {
     id: string;
     name: string;
-    requiredSymbols: GameSymbol[]; // What combination defeats it
-    type: "monster" | "obstacle" | "boss";
-    currentResistance: GameSymbol[]; // Remaining symbols needed to defeat it
-    image?: string;
+    type: DungeonCardType;
+    // Symbols required to defeat this card
+    requiredSymbols: GameSymbol[];
+    // Remaining unmatched symbols (updated as cards are played)
+    remainingSymbols: GameSymbol[];
 }
 
 /**
@@ -38,39 +64,48 @@ export interface Monster {
 export interface Player {
     id: string;
     name: string;
+    heroClass: HeroClass;
     hand: Card[];
+    deckCount: number;
     isReady: boolean;
     isConnected: boolean;
-    class: "barbarian" | "paladin" | "ninja" | "huntress" | "wizard";
-    deckCount: number;
+    // Cards played to the center against the current dungeon card
+    playedCards: Card[];
 }
 
 /**
- * The Global Game Room State (The Source of Truth)
+ * The Global Game Room State (Source of Truth on the server)
  */
 export interface GameRoom {
     roomId: string;
-    players: Record<string, Player>;
-    currentMonster: Monster | null;
-    monsterDeckCount: number;
     phase: GamePhase;
-    timer: number; // In seconds
-    winner: string | null; // Player ID or "team"
+    players: Record<string, Player>;
+    // The current dungeon card all players are fighting
+    currentDungeonCard: DungeonCard | null;
+    // Number of cards remaining in the dungeon deck (not counting current card or boss)
+    dungeonDeckCount: number;
+    // Remaining seconds on the 5-minute clock (authoritative on server)
+    timer: number;
+    // Populated when game ends
+    gameResult: "won" | "lost" | null;
 }
 
 /**
  * Communication Protocol: Client → Server
+ * All messages must be serializable as JSON.
  */
 export type ClientMessage =
-    | { type: "JOIN_GAME"; name: string; class: Player["class"] }
+    | { type: "SET_NAME"; name: string }
+    | { type: "SET_HERO"; heroClass: HeroClass }
     | { type: "SET_READY"; ready: boolean }
-    | { type: "START_GAME" }
     | { type: "PLAY_CARD"; cardId: string }
-    | { type: "DRAW_CARD" }
+    | { type: "USE_ABILITY" } // Costs 3 discards, uses hero special ability
+    | { type: "REQUEST_STATE" } // Client requests full resync (for reconnect)
     | { type: "LEAVE_GAME" };
 
 /**
  * Communication Protocol: Server → Client
+ * All messages must be serializable as JSON.
  */
 export type ServerMessage =
     | { type: "STATE_SYNC"; state: GameRoom }
@@ -78,6 +113,6 @@ export type ServerMessage =
     | { type: "PLAYER_LEFT"; playerId: string }
     | { type: "GAME_STARTED" }
     | { type: "TIMER_TICK"; seconds: number }
-    | { type: "MONSTER_DEFEATED"; nextMonster: Monster | null }
-    | { type: "GAME_OVER"; result: "won" | "lost"; winner?: string }
+    | { type: "DUNGEON_CARD_DEFEATED"; nextCard: DungeonCard | null }
+    | { type: "GAME_OVER"; result: "won" | "lost" }
     | { type: "ERROR"; message: string };
