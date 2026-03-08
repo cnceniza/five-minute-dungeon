@@ -124,32 +124,33 @@
 
 ### 2.1 Define Game Types
 
-- [ ] In `types/index.ts`, define all shared TypeScript interfaces:
-  - [ ] `Player` — id, name, hand (array of cards), isReady, isConnected
-  - [ ] `Card` — id, name, type (e.g. sword, shield, scroll, etc.), value
-  - [ ] `DungeonBoss` — id, name, requiredCards (what combination defeats it), currentHp (or resistance tracker)
-  - [ ] `GameRoom` — roomId, players, currentBoss, deck (remaining cards), phase, timer, winner
-  - [ ] `GamePhase` — `"waiting"` | `"countdown"` | `"playing"` | `"won"` | `"lost"`
-  - [ ] `ServerMessage` — a discriminated union of all messages the server can send to clients
-  - [ ] `ClientMessage` — a discriminated union of all messages clients can send to the server
-- [ ] Review types with the lens of: "can I serialize and deserialize this as JSON?" — adjust any types that can't be
+- [x] In `types/index.ts`, define all shared TypeScript interfaces:
+  - [x] `Player` — id, name, hand (array of cards), isReady, isConnected
+  - [x] `Card` — id, name, type (e.g. sword, shield, scroll, etc.), value
+  - [x] `DungeonBoss` — id, name, requiredCards (what combination defeats it), currentHp (or resistance tracker)
+  - [x] `GameRoom` — roomId, players, currentBoss, deck (remaining cards), phase, timer, winner
+  - [x] `GamePhase` — `"waiting"` | `"countdown"` | `"playing"` | `"won"` | `"lost"`
+  - [x] `ServerMessage` — a discriminated union of all messages the server can send to clients
+  - [x] `ClientMessage` — a discriminated union of all messages clients can send to the server
+- [x] Review types with the lens of: "can I serialize and deserialize this as JSON?" — adjust any types that can't be
 
 ### 2.2 Define the Message Protocol
 
-- [ ] Document every message type the server sends (outbound) and receives (inbound) before writing any code
-- [ ] Outbound (server → all clients):
-  - [ ] `state_update` — full game state snapshot sent after every action
-  - [ ] `player_joined` — a new player connected to the room
-  - [ ] `player_left` — a player disconnected
-  - [ ] `game_started` — game transitioned from waiting to playing
-  - [ ] `timer_tick` — authoritative countdown value (sent every second from the server)
-  - [ ] `game_over` — win or loss with reason
-  - [ ] `error` — invalid action attempted, with reason
-- [ ] Inbound (client → server):
-  - [ ] `set_name` — player sets their display name
-  - [ ] `set_ready` — player toggles their ready status
-  - [ ] `play_card` — player plays a card from their hand
-  - [ ] `request_state` — client requests a full state resync (for reconnection)
+- [x] Document every message type the server sends (outbound) and receives (inbound) before writing any code
+- [x] Outbound (server → all clients):
+  - [x] `state_update` — full game state snapshot sent after every action
+  - [x] `player_joined` — a new player connected to the room
+  - [x] `player_left` — a player disconnected
+  - [x] `game_started` — game transitioned from waiting to playing
+  - [x] `timer_tick` — authoritative countdown value (sent every second from the server)
+  - [x] `game_over` — win or loss with reason
+  - [x] `error` — invalid action attempted, with reason
+- [x] Inbound (client → server):
+  - [x] `set_name` — player sets their display name
+  - [x] `set_ready` — player toggles their ready status
+  - [x] `play_card` — player plays a card from their hand
+  - [x] `use_ability` — player uses hero special ability (costs 3 discards)
+  - [x] `request_state` — client requests a full state resync (for reconnection)
 
 ### 2.3 Server State Management
 
