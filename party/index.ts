@@ -111,6 +111,9 @@ export default class GameServer implements Party.Server {
   /** In-memory source of truth. Lives for the lifetime of the room. */
   private state: GameRoom;
 
+  /** Tracks the room reset countdown when all players disconnect. */
+  private resetTimeout: ReturnType<typeof setTimeout> | null = null;
+
   constructor(readonly room: Party.Room) {
     this.state = getInitialState(room.id);
   }
@@ -121,6 +124,12 @@ export default class GameServer implements Party.Server {
    * notify everyone else that they joined.
    */
   onConnect(conn: Party.Connection): void {
+    // If there was a pending room reset, cancel it
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+      this.resetTimeout = null;
+    }
+
     const newPlayer: Player = {
       id: conn.id,
       name: `Player ${Object.keys(this.state.players).length + 1}`,
@@ -171,12 +180,14 @@ export default class GameServer implements Party.Server {
       (p) => !p.isConnected
     );
     if (allDisconnected) {
-      setTimeout(() => {
+      if (this.resetTimeout) clearTimeout(this.resetTimeout);
+      this.resetTimeout = setTimeout(() => {
         const stillAllDisconnected = Object.values(this.state.players).every(
           (p) => !p.isConnected
         );
         if (stillAllDisconnected) {
           this.state = getInitialState(this.room.id);
+          this.resetTimeout = null;
         }
       }, 30_000);
     }
