@@ -172,17 +172,21 @@
 
 ### 2.4 Implement Game Logic — Pure Functions
 
-- [ ] Create `lib/game/deck.ts`:
-  - [ ] `createDeck(): Card[]` — generates the full card deck
-  - [ ] `shuffleDeck(deck: Card[]): Card[]` — Fisher-Yates shuffle
-  - [ ] `dealHands(deck: Card[], playerCount: number): { hands: Card[][], remainingDeck: Card[] }` — deals cards
-- [ ] Create `lib/game/boss.ts`:
-  - [ ] `createBossList(): DungeonBoss[]` — returns all bosses in order
-  - [ ] `checkBossDefeated(boss: DungeonBoss, playedCards: Card[]): boolean` — validates if played cards defeat the boss
-- [ ] Create `lib/game/validation.ts`:
-  - [ ] `canPlayCard(player: Player, card: Card, gameState: GameRoom): boolean` — validates a card play action
-  - [ ] `isValidPlayerAction(action: ClientMessage, gameState: GameRoom): { valid: boolean, reason?: string }` — top-level action validator
-- [ ] All functions in this folder must be **pure** (no side effects, same input = same output) — makes them easy to unit test
+- [x] Create `lib/game/deck.ts`:
+  - [x] `createDeck(): Card[]` — generates the full card deck
+  - [x] `shuffleDeck(deck: Card[]): Card[]` — Fisher-Yates shuffle
+  - [x] `dealHands(deck, playerIds, handSize)` — deals cards per player
+  - [x] `drawCard(deck)` — draws a single card from the top
+- [x] Create `lib/game/dungeon.ts`:
+  - [x] `BOSS_1_DUNGEON_CARDS` — full set of door/event cards for Boss #1
+  - [x] `BOSS_1` — the Baby Barbarian boss card
+  - [x] `applySymbol(card, symbol)` — applies a played symbol to a dungeon card
+  - [x] `isDungeonCardDefeated(card)` — checks if a card has been fully matched
+- [x] Create `lib/game/validation.ts`:
+  - [x] `canPlayCard(player, card, gameState)` — validates a card play action (incl. Boss rules)
+  - [x] `isOutOfCards(gameState)` — detects the "no cards left" loss condition
+  - [x] `allPlayersReady(gameState)` — checks if all connected players are ready
+- [x] All functions are **pure** (no side effects, same input = same output)
 
 ### 2.5 Implement Message Handlers
 
