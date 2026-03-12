@@ -101,3 +101,15 @@ export function applySymbol(
 export function isDungeonCardDefeated(card: DungeonCard): boolean {
     return card.remainingSymbols.length === 0;
 }
+
+/**
+ * Draws a single card from the top of the dungeon deck.
+ * Returns the drawn card and the remaining deck, or null if empty.
+ */
+export function drawDungeonCard(
+    deck: DungeonCard[]
+): { card: DungeonCard; remainingDeck: DungeonCard[] } | null {
+    if (deck.length === 0) return null;
+    const [card, ...remainingDeck] = deck;
+    return { card: card!, remainingDeck };
+}

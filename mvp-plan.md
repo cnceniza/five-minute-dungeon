@@ -190,21 +190,22 @@
 
 ### 2.5 Implement Message Handlers
 
-- [ ] `handleSetName(playerId, name, state)`:
-  - [ ] Validate name is non-empty and under 20 characters
-  - [ ] Update player name in state
-- [ ] `handleSetReady(playerId, state)`:
-  - [ ] Toggle player's `isReady` flag
-  - [ ] Check if all connected players are ready → if yes, trigger game start
-- [ ] `handlePlayCard(playerId, cardId, state)`:
-  - [ ] Validate it is currently the playing phase
-  - [ ] Validate the card exists in the player's hand
-  - [ ] Remove card from player's hand
-  - [ ] Add card to "played pile" against current boss
-  - [ ] Check if boss is defeated → if yes, advance to next boss or trigger win
-  - [ ] Check if deck is empty and boss not defeated → trigger loss
-- [ ] `handleRequestState(connection, state)`:
-  - [ ] Send full current state to that single connection only (not broadcast)
+- [x] `handleSetName(playerId, name, state)`:
+  - [x] Validate name is non-empty and under 20 characters
+  - [x] Update player name in state
+- [x] `handleSetReady(playerId, state)`:
+  - [x] Toggle player's `isReady` flag
+  - [x] Check if all connected players are ready → auto-trigger `startGame()`
+- [x] `handlePlayCard(playerId, cardId, state)`:
+  - [x] Validate it is currently the playing phase
+  - [x] Validate the card exists in the player's hand
+  - [x] Remove card from player's hand
+  - [x] Add card to "played pile" against current dungeon card
+  - [x] Apply card symbols via `applySymbol()`
+  - [x] Check if dungeon card defeated → advance to next or boss fight
+  - [x] Check if deck and hands empty → trigger loss
+- [x] `handleRequestState(connection, state)`:
+  - [x] Send full current state to that single connection only
 
 ### 2.6 Timer Implementation
 
